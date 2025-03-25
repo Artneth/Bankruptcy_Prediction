@@ -1,4 +1,4 @@
-# Bankruptcy_Prevention
+# Bankruptcy_Prediction
 
 The goal here is to model the probability that a business goes bankrupt from different features.
 
