@@ -16,7 +16,7 @@ def load_model_and_scaler():
 
 model, scaler = load_model_and_scaler()
 
-st.title("Bankruptcy Prediction App")
+st.title("💲Bankruptcy Prediction App💲")
 
 # Expected feature columns
 feature_names = ['industrial_risk', 'management_risk', 'financial_flexibility', 
