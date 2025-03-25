@@ -8,7 +8,7 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, confusion_matrix
 
 # Load the trained model and scaler
-@st.cache(allow_output_mutation=True)
+@st.cache_resource
 def load_model_and_scaler():
     model = joblib.load("random_forest.pkl")  # Load trained model
     scaler = joblib.load("scaler.pkl")  # Load the trained scaler
