@@ -7,6 +7,10 @@ import seaborn as sns
 from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, confusion_matrix
 
+
+st.page_link("https://github.com/Artneth/Bankruptcy_prevention", label="View on GitHub")
+
+
 # Load the trained model and scaler
 @st.cache_resource
 def load_model_and_scaler():
