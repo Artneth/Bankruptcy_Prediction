@@ -50,10 +50,33 @@ if mode == "Single Prediction":
 # 🔹 BATCH PREDICTION
 elif mode == "Batch Prediction":
     st.header("Batch Prediction")
-    uploaded_file = st.file_uploader("Upload a CSV file", type="csv")
+    # File uploader accepting both CSV and Excel files
+    uploaded_file = st.file_uploader("Upload a CSV or Excel file", type=["csv", "xlsx", "xls"])
 
+    import chardet
+    
+    data = None  # Initialize data variable
     if uploaded_file is not None:
-        data = pd.read_csv(uploaded_file)
+        # Detect file encoding
+        raw_data = uploaded_file.read()
+        result = chardet.detect(raw_data)
+        encoding = result['encoding'] if result['encoding'] else 'utf-8'
+
+        # Read CSV with detected encoding
+        uploaded_file.seek(0)  # Reset file pointer after reading raw bytes
+        try:
+            if uploaded_file.name.endswith('.csv'):
+                data = pd.read_csv(uploaded_file, encoding=encoding, errors='replace')
+            else:
+                data = pd.read_excel(uploaded_file, engine='openpyxl')
+        except Exception as e:
+            st.error(f"Error reading the file: {e}")
+
+    # Ensure `data` is defined before using it in further processing
+    if data is not None:
+        st.write("Preview of the uploaded data:")
+        st.dataframe(data)
+
 
         # Standardize column names (remove spaces, convert to lowercase)
         data.columns = [col.strip().lower() for col in data.columns]
@@ -65,7 +88,7 @@ elif mode == "Batch Prediction":
         if not all(col in data.columns for col in required_features):
             st.error("The uploaded CSV is missing one or more required feature columns!")
         else:
-            # Drop class column if present before scaling and prediction
+            # Drop class column if present before scaling and prediction    
             if 'class' in data.columns:
                 true_labels = data['class']  # Save actual values for evaluation
                 data = data.drop(columns=['class'])  # Drop before prediction
